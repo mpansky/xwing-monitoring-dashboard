@@ -1,0 +1,25 @@
+name: Claude Code — autonomous prototype build
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            A ticket has been filed as this GitHub issue. Implement it to build a
+            working prototype, following the tech stack and conventions in CLAUDE.md.
+            Keep changes minimal and runnable. When you are done, open a pull request
+            whose body contains "Closes #${{ github.event.issue.number }}".
+          claude_args: "--max-turns 30"
